@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Search, Filter, UserPlus } from "lucide-react";
+import { Search, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { UsersTable } from "@/components/users/UsersTable";
+import { CreateUserDialog } from "@/components/users/CreateUserDialog";
 
 const Users = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -18,10 +19,7 @@ const Users = () => {
             Manage your newsletter subscribers and their activity
           </p>
         </div>
-        <Button className="btn-gradient">
-          <UserPlus className="w-4 h-4 mr-2" />
-          Add User
-        </Button>
+        <CreateUserDialog />
       </div>
 
       {/* Filters */}

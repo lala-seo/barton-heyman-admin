@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, Mail, BarChart3 } from "lucide-react";
+import { LayoutDashboard, Users, Mail, MessageCircle, BarChart3 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 
 import {
@@ -17,6 +17,7 @@ const items = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Users", url: "/users", icon: Users },
   { title: "Newsletters", url: "/newsletters", icon: Mail },
+  { title: "Contact", url: "/contact", icon: MessageCircle },
 ];
 
 export function AppSidebar() {
