@@ -9,6 +9,8 @@ import Dashboard from "./pages/Dashboard";
 import Users from "./pages/Users";
 import Newsletters from "./pages/Newsletters";
 import Contact from "./pages/Contact";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +35,8 @@ const App = () => (
                   <Route path="/users" element={<Users />} />
                   <Route path="/newsletters" element={<Newsletters />} />
                   <Route path="/contact" element={<Contact />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<SignUp />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>
