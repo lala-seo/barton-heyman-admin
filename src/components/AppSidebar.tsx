@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, Mail, MessageCircle, BarChart3, LogIn, UserPlus } from "lucide-react";
+import { LayoutDashboard, Users, Mail, MessageCircle, BarChart3 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 
 import {
@@ -18,11 +18,6 @@ const items = [
   { title: "Users", url: "/users", icon: Users },
   { title: "Newsletters", url: "/newsletters", icon: Mail },
   { title: "Contact", url: "/contact", icon: MessageCircle },
-];
-
-const authItems = [
-  { title: "Sign In", url: "/login", icon: LogIn },
-  { title: "Sign Up", url: "/signup", icon: UserPlus },
 ];
 
 export function AppSidebar() {
@@ -73,27 +68,6 @@ export function AppSidebar() {
                     <NavLink 
                       to={item.url} 
                       end={item.url === "/"}
-                      className={({ isActive }) => getNavCls({ isActive })}
-                    >
-                      <item.icon className="w-4 h-4" />
-                      {open && <span>{item.title}</span>}
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Authentication</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {authItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink 
-                      to={item.url}
                       className={({ isActive }) => getNavCls({ isActive })}
                     >
                       <item.icon className="w-4 h-4" />
