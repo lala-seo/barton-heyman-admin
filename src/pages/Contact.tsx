@@ -142,7 +142,7 @@ const Contact = () => {
                     required
                   />
                 </div>
-                <Button type="submit" className="btn-gradient w-full">
+                <Button type="submit"      className="hover:bg-[#2E2E2E] hover:cursor-pointer transition-colors  bg-[#1F1F1F] w-full">
                   <Send className="w-4 h-4 mr-2" />
                   Send Message
                 </Button>

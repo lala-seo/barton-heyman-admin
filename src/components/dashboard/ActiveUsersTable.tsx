@@ -1,96 +1,79 @@
+
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import axios from "axios";
+import { BASE_URL } from "@/utils/variables";
 
-const activeUsers = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    email: "sarah@example.com",
-    activity: "Opened 5 newsletters",
-    score: 95,
-    status: "highly_active",
-  },
-  {
-    id: 2,
-    name: "Mike Chen",
-    email: "mike@example.com",
-    activity: "Clicked 8 links",
-    score: 88,
-    status: "active",
-  },
-  {
-    id: 3,
-    name: "Emma Davis",
-    email: "emma@example.com",
-    activity: "Shared 2 newsletters",
-    score: 82,
-    status: "active",
-  },
-  {
-    id: 4,
-    name: "Alex Rodriguez",
-    email: "alex@example.com",
-    activity: "Subscribed recently",
-    score: 76,
-    status: "moderate",
-  },
-  {
-    id: 5,
-    name: "Lisa Park",
-    email: "lisa@example.com",
-    activity: "Opened 3 newsletters",
-    score: 71,
-    status: "moderate",
-  },
-];
+type Subscriber = {
+  id: string | number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  createdAt?: string; // if your API returns a timestamp
+};
 
-const getStatusBadge = (status: string) => {
-  switch (status) {
-    case "highly_active":
-      return <Badge className="bg-success/10 text-success hover:bg-success/20">Highly Active</Badge>;
-    case "active":
-      return <Badge className="bg-primary/10 text-primary hover:bg-primary/20">Active</Badge>;
-    case "moderate":
-      return <Badge className="bg-warning/10 text-warning hover:bg-warning/20">Moderate</Badge>;
+const getStatusBadge = (index: number) => {
+  // Example: you can base status on recency or random scoring
+  switch (index) {
+    case 0:
+      return <Badge className="bg-success/10 text-success hover:bg-success/20">New</Badge>;
     default:
-      return <Badge variant="secondary">Unknown</Badge>;
+      return <Badge variant="secondary">Recent</Badge>;
   }
 };
 
 export function ActiveUsersTable() {
+  const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
+
+  const fetchSubscribers = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/subscribers`);
+      // Assuming response is like { data: [...], total: number }
+      setSubscribers(res.data.data.slice(0, 5)); // show only 5 most recent
+    } catch (error) {
+      console.error("Error fetching subscribers:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSubscribers();
+  }, []);
+
   return (
     <Card className="card-elevated">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          Most Active Users
+          Recent Subscribers
           <Badge variant="secondary" className="ml-auto">
-            Top 5
+            Latest 5
           </Badge>
         </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {activeUsers.map((user) => (
+          {subscribers.map((user, index) => (
             <div key={user.id} className="flex items-center space-x-4">
               <Avatar className="h-10 w-10">
                 <AvatarFallback className="bg-primary/10 text-primary font-medium">
-                  {user.name.split(" ").map(n => n[0]).join("")}
+                  {`${user.email?.[0] || ""}${user.lastName?.[0] || ""}`}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 space-y-1">
-                <p className="text-sm font-medium leading-none">{user.name}</p>
-                <p className="text-xs text-muted-foreground">{user.activity}</p>
+                <p className="text-sm font-medium leading-none">
+                  {user.firstName} {user.lastName}
+                </p>
+                <p className="text-xs text-muted-foreground">{user.email}</p>
               </div>
               <div className="flex items-center gap-2">
-                <div className="text-right">
-                  <p className="text-sm font-medium">{user.score}</p>
-                  <p className="text-xs text-muted-foreground">Score</p>
-                </div>
-                {getStatusBadge(user.status)}
+                {getStatusBadge(index)}
               </div>
             </div>
           ))}
+          {subscribers.length === 0 && (
+            <p className="text-sm text-muted-foreground">No subscribers yet.</p>
+          )}
         </div>
       </CardContent>
     </Card>

@@ -8,6 +8,7 @@
   :root {
     /* Core Colors - Beautiful blue/purple gradient theme */
     --background: 250 100% 98%;
+    /* --background: 250 100% 98%; */
     --foreground: 224 71.4% 4.1%;
 
     --card: 0 0% 100%;
@@ -132,9 +133,10 @@
 @layer components {
   /* Custom button variants */
   .btn-gradient {
-    background: var(--gradient-primary);
+    background: rgb(48, 145, 20);
     @apply text-primary-foreground shadow-md hover:shadow-lg transition-all duration-300;
   }
+   
 
   .btn-hero {
     @apply bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl;

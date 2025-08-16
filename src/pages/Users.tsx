@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { UsersTable } from "@/components/users/UsersTable";
 import { CreateUserDialog } from "@/components/users/CreateUserDialog";
 
-const Users = () => {
+const Subscribers = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
@@ -14,16 +14,16 @@ const Users = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Users</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-bold tracking-tight">Subsribers</h1>
+          {/* <p className="text-muted-foreground">
             Manage your newsletter subscribers and their activity
-          </p>
+          </p> */}
         </div>
-        <CreateUserDialog />
+        {/* <CreateUserDialog /> */}
       </div>
 
       {/* Filters */}
-      <Card className="p-4">
+      {/* <Card className="p-4">
         <div className="flex gap-4 items-center">
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
@@ -39,7 +39,7 @@ const Users = () => {
             Filters
           </Button>
         </div>
-      </Card>
+      </Card> */}
 
       {/* Users Table */}
       <UsersTable searchQuery={searchQuery} />
@@ -47,4 +47,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Subscribers;

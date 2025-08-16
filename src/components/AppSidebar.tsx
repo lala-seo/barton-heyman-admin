@@ -15,10 +15,11 @@ import {
 
 const items = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
-  { title: "Users", url: "/users", icon: Users },
+  { title: "Subscribers", url: "/subscribers", icon: Users },
   { title: "Newsletters", url: "/newsletters", icon: Mail },
-  { title: "Contact", url: "/contact", icon: MessageCircle },
+  // { title: "Contact", url: "/contact", icon: MessageCircle },
 ];
+import bartonHeymanLogo from "../Common/images/barton-heyman logo.png"
 
 export function AppSidebar() {
   const { open } = useSidebar();
@@ -39,22 +40,22 @@ export function AppSidebar() {
 
   return (
     <Sidebar
-      className={`border-r bg-card/50 backdrop-blur-sm ${
+      className={`border-r bg-card/50  backdrop-blur-sm ${
         !open ? "w-14" : "w-64"
       }`}
       collapsible="icon"
     >
       <SidebarContent>
         <div className="p-4">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-              <BarChart3 className="w-4 h-4 text-white" />
+          <div className="flex items-center gap-2 ">
+            <div className="w-[100px] h-auto flex items-center justify-center">
+            <img src={bartonHeymanLogo} alt="" />
             </div>
-            {open && (
-              <span className="font-bold text-lg bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                NewsletterPro
+            {/* {open && (
+              <span className="font-bold text-lg text-black">
+                Barton Heyman
               </span>
-            )}
+            )} */}
           </div>
         </div>
 

@@ -1,12 +1,19 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import axios from "axios";
 import { Eye, EyeOff, UserPlus, Mail, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -16,6 +23,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
+import { BASE_URL } from "@/utils/variables";
+import bartonHeymanLogo from "../Common/images/barton-heyman logo.png";
 
 const signUpSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -23,11 +32,11 @@ const signUpSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z
     .string()
-    .min(8, "Password must be at least 8 characters")
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      "Password must contain at least one uppercase letter, one lowercase letter, and one number"
-    ),
+    // .min(8, "Password must be at least 8 characters")
+    // .regex(
+    //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+    //   "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+    // ),
 });
 
 type SignUpFormValues = z.infer<typeof signUpSchema>;
@@ -36,6 +45,7 @@ export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
@@ -50,16 +60,27 @@ export default function SignUp() {
   const onSubmit = async (data: SignUpFormValues) => {
     setIsLoading(true);
     try {
-      // TODO: Implement Supabase authentication
-      console.log("Sign up data:", data);
+      const payload = {
+        ...data,
+        role: "admin", // required field
+      };
+
+      const response = await axios.post(`${BASE_URL}/auth/register`, payload);
+
       toast({
         title: "Account Created Successfully",
-        description: "Welcome! Please check your email to verify your account.",
+        description:
+          response.data?.message ||
+          "Welcome! Please check your email to verify your account.",
       });
+
+      navigate("/login");
     } catch (error) {
       toast({
         title: "Sign Up Failed",
-        description: "Something went wrong. Please try again.",
+        description:
+          error.response?.data?.message ||
+          "Something went wrong. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -71,10 +92,10 @@ export default function SignUp() {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-xl mx-auto mb-4 flex items-center justify-center">
-            <UserPlus className="w-6 h-6 text-white" />
+           <div className="w-[100px] h-auto mx-auto mb-4 flex items-center justify-center">
+            <img src={bartonHeymanLogo} alt="" />
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold text-black">
             Create Account
           </h1>
           <p className="text-muted-foreground mt-2">
@@ -91,7 +112,10 @@ export default function SignUp() {
           </CardHeader>
           <CardContent>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
                 <div className="grid grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
@@ -194,7 +218,7 @@ export default function SignUp() {
 
                 <Button
                   type="submit"
-                  className="w-full btn-hero"
+      className="hover:bg-[#2E2E2E] hover:cursor-pointer transition-colors  bg-[#1F1F1F] w-full"
                   disabled={isLoading}
                 >
                   {isLoading ? "Creating Account..." : "Create Account"}

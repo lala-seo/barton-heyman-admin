@@ -58,7 +58,7 @@ export function CreateUserDialog({ trigger }: CreateUserDialogProps) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {trigger || (
-          <Button className="btn-gradient">
+          <Button       className="hover:bg-[#2E2E2E] hover:cursor-pointer transition-colors  bg-[#1F1F1F] ">
             <UserPlus className="w-4 h-4 mr-2" />
             Add User
           </Button>
@@ -117,7 +117,7 @@ export function CreateUserDialog({ trigger }: CreateUserDialogProps) {
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit" className="btn-gradient">
+            <Button type="submit"       className="hover:bg-[#2E2E2E] hover:cursor-pointer transition-colors  bg-[#1F1F1F] ">
               Add User
             </Button>
           </DialogFooter>

@@ -1,12 +1,18 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Eye, EyeOff, LogIn, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -16,6 +22,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
+import axios from "axios";
+import { BASE_URL } from "@/utils/variables";
+import bartonHeymanLogo from "../Common/images/barton-heyman logo.png";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -28,6 +37,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -40,12 +50,19 @@ export default function Login() {
   const onSubmit = async (data: LoginFormValues) => {
     setIsLoading(true);
     try {
-      // TODO: Implement Supabase authentication
       console.log("Login data:", data);
+
+      const response = await axios.post(`${BASE_URL}/auth/login`, data);
+      console.log("res ", response);
+
       toast({
         title: "Login Successful",
-        description: "Welcome back!",
+        description: response.data?.message || "Welcome back!",
       });
+      localStorage.setItem("token", response.data?.token || "");
+      localStorage.setItem("admin", JSON.stringify(response.data?.data || {}));
+
+      navigate("/");
     } catch (error) {
       toast({
         title: "Login Failed",
@@ -61,10 +78,10 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-xl mx-auto mb-4 flex items-center justify-center">
-            <LogIn className="w-6 h-6 text-white" />
+          <div className="w-[100px] h-auto mx-auto mb-4 flex items-center justify-center">
+            <img src={bartonHeymanLogo} alt="" />
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold font-primary text-blacl">
             Welcome Back
           </h1>
           <p className="text-muted-foreground mt-2">
@@ -81,7 +98,10 @@ export default function Login() {
           </CardHeader>
           <CardContent>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
                 <FormField
                   control={form.control}
                   name="email"
@@ -140,7 +160,7 @@ export default function Login() {
 
                 <Button
                   type="submit"
-                  className="w-full btn-hero"
+                  className="hover:bg-[#2E2E2E] hover:cursor-pointer transition-colors  bg-[#1F1F1F] w-full"
                   disabled={isLoading}
                 >
                   {isLoading ? "Signing in..." : "Sign In"}
