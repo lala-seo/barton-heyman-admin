@@ -52,6 +52,7 @@ const AppLayout = () => {
     //     </div>
     //   </div>
     // </SidebarProvider>
+    
       <SidebarProvider>
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
